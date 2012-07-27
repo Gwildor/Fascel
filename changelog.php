@@ -21,21 +21,23 @@ if (isset($_POST['submt'])) {
 }
 
 // Set default versions.
-$first_set  = false;
-$second_set = false;
-$sql  = query("SELECT * FROM `Fascel_releases` ORDER BY `ts` DESC");
-while ($row = mysql_fetch_assoc($sql)) {
-	if (empty($version1)) {
-		$version1 = $row['id'];
-	}
-	if (empty($version2) and $first_set and !$second_set) {
-		$version2 = $row['id'];
-	}
-	if ($version1 == $row['id']) { // $version1 can be set as well when handling the $_POST data, so seperate if.
-		$first_set = true;
-	}
-	if ($version2 == $row['id']) {
-		$second_set = true;
+if (empty($version1) || empty($version2)) {
+	$first_set  = false;
+	$second_set = false;
+	$sql  = query("SELECT * FROM `Fascel_releases` ORDER BY `ts` DESC");
+	while ($row = mysql_fetch_assoc($sql)) {
+		if (empty($version1)) {
+			$version1 = $row['id'];
+		}
+		if (empty($version2) && $first_set && !$second_set) {
+			$version2 = $row['id'];
+		}
+		if ($version1 == $row['id']) { // $version1 can be set as well when handling the $_POST data, so seperate if.
+			$first_set = true;
+		}
+		if ($version2 == $row['id']) {
+			$second_set = true;
+		}
 	}
 }
 
