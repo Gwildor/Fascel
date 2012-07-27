@@ -6,7 +6,7 @@ if (isset($_POST['submit'])) {
 
 	echo '<pre>';print_r($_POST);echo '</pre>';
 
-	// check if version already exists
+	// Check if version already exists.
 	$sql = query("SELECT `id` FROM `Fascel_releases` WHERE `version` = '".sqlesc($_POST['version'])."' LIMIT 1");
 	if (mysql_num_rows($sql) == 0) {
 		$sql = query("SELECT `id`, `version` FROM `Fascel_releases` ORDER BY `ts` DESC LIMIT 1");
@@ -23,7 +23,7 @@ if (isset($_POST['submit'])) {
 		$id  = $row['id'];
 	}
 
-	// insert the changes
+	// Insert the changes.
 	foreach ($_POST['changes'] as $key => $changes) {
 		if (!empty($changes)) {
 			$changes = explode("\n", preg_replace('/(\r\n|\r|\n)/', "\n", $changes));
