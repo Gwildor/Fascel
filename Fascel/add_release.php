@@ -4,7 +4,7 @@ require_once 'includes.php';
 
 if (isset($_POST['submit'])) {
 
-	echo '<pre>';print_r($_POST);echo '</pre>';
+	//echo '<pre>';print_r($_POST);echo '</pre>';
 
 	// Check if version already exists.
 	$sql = query("SELECT `id` FROM `Fascel_releases` WHERE `version` = '".sqlesc($_POST['version'])."' LIMIT 1");
