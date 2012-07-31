@@ -9,13 +9,17 @@ $version1 = '';
 $version2 = '';
 if (isset($_POST['submt'])) {
 
-	if (empty($_POST['version_1'])) {
+	if (empty($_POST['version_1']) || !is_numeric($_POST['version1'])) {
 		$errors = true;
 		?><div id="fascel_changelog_empty_version_1">Please select a version to view the changelog of.</div><?php
 	}
-	if (empty($_POST['version_2'])) {
+	if (empty($_POST['version_2']) || !is_numeric($_POST['version2'])) {
 		$errors = true;
 		?><div id="fascel_changelog_empty_version_1">Please select a version to compare the version against.</div><?php
+	}
+
+	if (!$errors) {
+
 	}
 
 }
@@ -44,6 +48,34 @@ if (empty($version1) || empty($version2)) {
 // Still not done well? Fine, let's just use same versions.
 if (empty($version2)) {
 	$version2 = $version1;
+}
+
+/*
+ * Select timeframe. Perhaps in the future this should be changed into
+ * using id's or something like that, for futures where no release date
+ * is known.
+ */
+$sql = query("SELECT `ts` FROM `Fascel_releases` WHERE `id` = '".sqlesc($version1)."' LIMIT 1");
+$row = mysql_fetch_assoc($sql);
+$ts1 = $row['ts'];
+
+if ($version1 == $version2) {
+	$ts2 = $ts1;
+	$gt  = '>=';
+} else {
+	$gt  = '>';
+	$sql = query("SELECT `ts` FROM `Fascel_releases` WHERE `id` = '".sqlesc($version2)."' LIMIT 1");
+	$row = mysql_fetch_assoc($sql);
+	$ts2 = $row['ts'];
+}
+
+if ($ts2 > $ts1) { // User accidentally the whole thing → switch versions.
+	$ts_temp = $ts1;
+	$ts1 = $ts2;
+	$ts2 = $ts_temp;
+	$vers_temp = $version1;
+	$version1 = $version2;
+	$version2 = $vers_temp;
 }
 
 ?>
@@ -98,25 +130,6 @@ if (empty($version2)) {
 </form>
 
 <?php
-
-/*
- * Select timeframe. Perhaps in the future this should be changed into
- * using id's or something like that, for futures where no release date
- * is known.
- */
-$sql = query("SELECT `ts` FROM `Fascel_releases` WHERE `id` = '".sqlesc($version1)."' LIMIT 1");
-$row = mysql_fetch_assoc($sql);
-$ts1 = $row['ts'];
-
-if ($version1 == $version2) {
-	$ts2 = $ts1;
-	$gt  = '>=';
-} else {
-	$gt  = '>';
-	$sql = query("SELECT `ts` FROM `Fascel_releases` WHERE `id` = '".sqlesc($version2)."' LIMIT 1");
-	$row = mysql_fetch_assoc($sql);
-	$ts2 = $row['ts'];
-}
 
 // Fetch changes.
 $sql = query("SELECT `Fascel_changes`.`type` as `type`, `Fascel_changes`.`change` as `change` FROM `Fascel_releases`, `Fascel_changes` WHERE `Fascel_releases`.`id` = `Fascel_changes`.`id` AND `Fascel_releases`.`ts` <= ".$ts1." AND `Fascel_releases`.`ts` ".$gt." ".$ts2." ORDER BY `Fascel_changes`.`type` ASC, `Fascel_releases`.`ts` DESC, `Fascel_releases`.`id` DESC");
