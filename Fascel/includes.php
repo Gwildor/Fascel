@@ -1,6 +1,11 @@
 <?php
 
+$Fascel = array('config' => array(), 'vars' => array(), 'constants' => array());
+
+require_once 'constants.php';
+require_once 'config.php';
 require_once 'mysql.php';
+
 mysql_select_db($mysql_db, mysql_connect($mysql_ip, $mysql_user, $mysql_pw));
 
 function sqlesc($str) {
