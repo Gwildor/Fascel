@@ -1,12 +1,12 @@
 <?php
 
-$Fascel = array('config' => array(), 'vars' => array(), 'constants' => array());
+$Fascel = array('config' => array(), 'vars' => array(), 'constants' => array(), 'mysql' => array());
 
 require_once 'constants.php';
 require_once 'config.php';
 require_once 'mysql.php';
 
-mysql_select_db($mysql_db, mysql_connect($mysql_ip, $mysql_user, $mysql_pw));
+mysql_select_db($Fascel['mysql']['db'], mysql_connect($Fascel['mysql']['ip'], $Fascel['mysql']['user'], $Fascel['mysql']['pw']));
 
 function sqlesc($str) {
 	return mysql_real_escape_string($str);
