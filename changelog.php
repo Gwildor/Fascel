@@ -171,4 +171,9 @@ echo '
 	</ul>
 </div>';
 
+// Footer
+if ($Fascel['config']['footer'] !== false) {
+	echo '<div id="fascel_footer">'.$Fascel['config']['footer'].'</div>';
+}
+
 ?>
