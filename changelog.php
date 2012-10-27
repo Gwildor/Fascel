@@ -4,51 +4,51 @@ require_once 'Fascel/includes.php';
 
 
 // See which versions the user wants to view.
-$errors = false;
-$version1 = '';
-$version2 = '';
+$Fascel['vars']['errors'] = false;
+$Fascel['vars']['version1'] = '';
+$Fascel['vars']['version2'] = '';
 if (isset($_POST['submit'])) {
 
 	if (empty($_POST['version_1']) || !is_numeric($_POST['version_1'])) {
-		$errors = true;
+		$Fascel['vars']['errors'] = true;
 		?><div id="fascel_changelog_empty_version_1">Please select a version to view the changelog of.</div><?php
 	}
 	if (empty($_POST['version_2']) || !is_numeric($_POST['version_2'])) {
-		$errors = true;
+		$Fascel['vars']['errors'] = true;
 		?><div id="fascel_changelog_empty_version_2">Please select a version to compare the version against.</div><?php
 	}
 
-	if (!$errors) {
-		$version1 = $_POST['version_1'];
-		$version2 = $_POST['version_2'];
+	if (!$Fascel['vars']['errors']) {
+		$Fascel['vars']['version1'] = $_POST['version_1'];
+		$Fascel['vars']['version2'] = $_POST['version_2'];
 	}
 
 }
 
 // Set default versions.
-if (empty($version1) || empty($version2)) {
-	$first_set  = false;
-	$second_set = false;
-	$sql = query("SELECT * FROM `Fascel_releases` ORDER BY `ts` DESC, `id` DESC");
-	while ($row = mysql_fetch_assoc($sql)) {
-		if (empty($version1)) {
-			$version1 = $row['id'];
+if (empty($Fascel['vars']['version1']) || empty($Fascel['vars']['version2'])) {
+	$Fascel['vars']['first_set']  = false;
+	$Fascel['vars']['second_set'] = false;
+	$Fascel['vars']['sql'] = query("SELECT * FROM `Fascel_releases` ORDER BY `ts` DESC, `id` DESC");
+	while ($Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql'])) {
+		if (empty($Fascel['vars']['version1'])) {
+			$Fascel['vars']['version1'] = $Fascel['vars']['row']['id'];
 		}
-		if (empty($version2) && $first_set && !$second_set) {
-			$version2 = $row['id'];
+		if (empty($Fascel['vars']['version2']) && $Fascel['vars']['first_set'] && !$Fascel['vars']['second_set']) {
+			$Fascel['vars']['version2'] = $Fascel['vars']['row']['id'];
 		}
-		if ($version1 == $row['id']) { // $version1 can be set as well when handling the $_POST data, so seperate if.
-			$first_set = true;
+		if ($Fascel['vars']['version1'] == $Fascel['vars']['row']['id']) { // $Fascel['vars']['version1'] can be set as well when handling the $_POST data, so seperate if.
+			$Fascel['vars']['first_set'] = true;
 		}
-		if ($version2 == $row['id']) {
-			$second_set = true;
+		if ($Fascel['vars']['version2'] == $Fascel['vars']['row']['id']) {
+			$Fascel['vars']['second_set'] = true;
 		}
 	}
 }
 
 // Still not done well? Fine, let's just use same version.
-if (empty($version2)) {
-	$version2 = $version1;
+if (empty($Fascel['vars']['version2'])) {
+	$Fascel['vars']['version2'] = $Fascel['vars']['version1'];
 }
 
 /*
@@ -56,27 +56,27 @@ if (empty($version2)) {
  * using id's or something like that, for futures where no release date
  * is known.
  */
-$sql = query("SELECT `ts` FROM `Fascel_releases` WHERE `id` = '".sqlesc($version1)."' LIMIT 1");
-$row = mysql_fetch_assoc($sql);
-$ts1 = $row['ts'];
+$Fascel['vars']['sql'] = query("SELECT `ts` FROM `Fascel_releases` WHERE `id` = '".sqlesc($Fascel['vars']['version1'])."' LIMIT 1");
+$Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql']);
+$Fascel['vars']['ts1'] = $Fascel['vars']['row']['ts'];
 
-if ($version1 == $version2) {
-	$ts2 = $ts1;
-	$gt  = '>=';
+if ($Fascel['vars']['version1'] == $Fascel['vars']['version2']) {
+	$Fascel['vars']['ts2'] = $Fascel['vars']['ts1'];
+	$Fascel['vars']['gt']  = '>=';
 } else {
-	$gt  = '>';
-	$sql = query("SELECT `ts` FROM `Fascel_releases` WHERE `id` = '".sqlesc($version2)."' LIMIT 1");
-	$row = mysql_fetch_assoc($sql);
-	$ts2 = $row['ts'];
+	$Fascel['vars']['gt']  = '>';
+	$Fascel['vars']['sql'] = query("SELECT `ts` FROM `Fascel_releases` WHERE `id` = '".sqlesc($Fascel['vars']['version2'])."' LIMIT 1");
+	$Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql']);
+	$Fascel['vars']['ts2'] = $Fascel['vars']['row']['ts'];
 }
 
-if ($ts2 > $ts1) { // User accidentally the whole thing → switch versions.
-	$ts_temp = $ts1;
-	$ts1 = $ts2;
-	$ts2 = $ts_temp;
-	$vers_temp = $version1;
-	$version1  = $version2;
-	$version2  = $vers_temp;
+if ($Fascel['vars']['ts2'] > $Fascel['vars']['ts1']) { // User accidentally the whole thing → switch versions.
+	$Fascel['vars']['ts_temp'] = $Fascel['vars']['ts1'];
+	$Fascel['vars']['ts1'] = $Fascel['vars']['ts2'];
+	$Fascel['vars']['ts2'] = $Fascel['vars']['ts_temp'];
+	$Fascel['vars']['vers_temp'] = $Fascel['vars']['version1'];
+	$Fascel['vars']['version1']  = $Fascel['vars']['version2'];
+	$Fascel['vars']['version2']  = $Fascel['vars']['vers_temp'];
 }
 
 ?>
@@ -90,15 +90,15 @@ if ($ts2 > $ts1) { // User accidentally the whole thing → switch versions.
 			<?php
 
 			// Assemble HTML for first dropdown.
-			$sql = query("SELECT * FROM `Fascel_releases` ORDER BY `ts` DESC, `id` DESC");
-			while ($row = mysql_fetch_assoc($sql)) {
-				echo "\n".'			<option value="'.$row['id'].'"';
-				if ($row['id'] == $version1) {
+			$Fascel['vars']['sql'] = query("SELECT * FROM `Fascel_releases` ORDER BY `ts` DESC, `id` DESC");
+			while ($Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql'])) {
+				echo "\n".'			<option value="'.$Fascel['vars']['row']['id'].'"';
+				if ($Fascel['vars']['row']['id'] == $Fascel['vars']['version1']) {
 					echo ' selected="selected"';
 				}
-				echo '>'.$row['version'];
-				if (!empty($row['codename'])) {
-					echo ' "'.$row['codename'].'"';
+				echo '>'.$Fascel['vars']['row']['version'];
+				if (!empty($Fascel['vars']['row']['codename'])) {
+					echo ' "'.$Fascel['vars']['row']['codename'].'"';
 				}
 				echo '</option>';
 			}
@@ -112,15 +112,15 @@ if ($ts2 > $ts1) { // User accidentally the whole thing → switch versions.
 			<?php
 
 			// Assemble HTML for second dropdown.
-			$sql = query("SELECT * FROM `Fascel_releases` ORDER BY `ts` DESC, `id` DESC");
-			while ($row = mysql_fetch_assoc($sql)) {
-				echo "\n".'			<option value="'.$row['id'].'"';
-				if ($row['id'] == $version2) {
+			$Fascel['vars']['sql'] = query("SELECT * FROM `Fascel_releases` ORDER BY `ts` DESC, `id` DESC");
+			while ($Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql'])) {
+				echo "\n".'			<option value="'.$Fascel['vars']['row']['id'].'"';
+				if ($Fascel['vars']['row']['id'] == $Fascel['vars']['version2']) {
 					echo ' selected="selected"';
 				}
-				echo '>'.$row['version'];
-				if (!empty($row['codename'])) {
-					echo ' "'.$row['codename'].'"';
+				echo '>'.$Fascel['vars']['row']['version'];
+				if (!empty($Fascel['vars']['row']['codename'])) {
+					echo ' "'.$Fascel['vars']['row']['codename'].'"';
 				}
 				echo '</option>';
 			}
@@ -137,34 +137,34 @@ if ($ts2 > $ts1) { // User accidentally the whole thing → switch versions.
 <?php
 
 // Fetch changes.
-$sql = query("SELECT `Fascel_changes`.`type` as `type`, `Fascel_changes`.`change` as `change` FROM `Fascel_releases`, `Fascel_changes` WHERE `Fascel_releases`.`id` = `Fascel_changes`.`id` AND `Fascel_releases`.`ts` <= ".$ts1." AND `Fascel_releases`.`ts` ".$gt." ".$ts2." ORDER BY `Fascel_changes`.`type` ASC, `Fascel_releases`.`ts` DESC, `Fascel_releases`.`id` DESC");
+$Fascel['vars']['sql'] = query("SELECT `Fascel_changes`.`type` as `type`, `Fascel_changes`.`change` as `change` FROM `Fascel_releases`, `Fascel_changes` WHERE `Fascel_releases`.`id` = `Fascel_changes`.`id` AND `Fascel_releases`.`ts` <= ".$Fascel['vars']['ts1']." AND `Fascel_releases`.`ts` ".$Fascel['vars']['gt']." ".$Fascel['vars']['ts2']." ORDER BY `Fascel_changes`.`type` ASC, `Fascel_releases`.`ts` DESC, `Fascel_releases`.`id` DESC");
 
-$curtype = 0;
-while ($row = mysql_fetch_assoc($sql)) {
-	if ($curtype != $row['type']) {
+$Fascel['vars']['curtype'] = 0;
+while ($Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql'])) {
+	if ($Fascel['vars']['curtype'] != $Fascel['vars']['row']['type']) {
 
-		if ($curtype != 0) {
+		if ($Fascel['vars']['curtype'] != 0) {
 			echo '
 				</ul>
 			</div>';
 		}
 
-		echo "\n".'<div id="fascel_changelog_type_'.$row['type'].'">';
+		echo "\n".'<div id="fascel_changelog_type_'.$Fascel['vars']['row']['type'].'">';
 
-		$curtype = $row['type'];
-		if ($row['type'] == 1) {
+		$Fascel['vars']['curtype'] = $Fascel['vars']['row']['type'];
+		if ($Fascel['vars']['row']['type'] == 1) {
 			echo "\n\t".'<h2>Added:</h2>';
 		}
-		if ($row['type'] == 2) {
+		if ($Fascel['vars']['row']['type'] == 2) {
 			echo "\n\t".'<h2>Changed:</h2>';
 		}
-		if ($row['type'] == 3) {
+		if ($Fascel['vars']['row']['type'] == 3) {
 			echo "\n\t".'<h2>Fixed:</h2>';
 		}
 		echo "\n\t".'<ul>';
 
 	}
-	echo "\n\t\t".'<li>'.$row['change'].'</li>';
+	echo "\n\t\t".'<li>'.$Fascel['vars']['row']['change'].'</li>';
 
 }
 echo '

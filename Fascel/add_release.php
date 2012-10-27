@@ -7,28 +7,28 @@ if (isset($_POST['submit'])) {
 	//echo '<pre>';print_r($_POST);echo '</pre>';
 
 	// Check if version already exists.
-	$sql = query("SELECT `id` FROM `Fascel_releases` WHERE `version` = '".sqlesc($_POST['version'])."' LIMIT 1");
-	if (mysql_num_rows($sql) == 0) {
-		$sql = query("SELECT `id`, `version` FROM `Fascel_releases` ORDER BY `ts` DESC LIMIT 1");
-		if (mysql_num_rows($sql) == 0) {
-			$id = 1;
+	$Fascel['vars']['sql'] = query("SELECT `id` FROM `Fascel_releases` WHERE `version` = '".sqlesc($_POST['version'])."' LIMIT 1");
+	if (mysql_num_rows($Fascel['vars']['sql']) == 0) {
+		$Fascel['vars']['sql'] = query("SELECT `id`, `version` FROM `Fascel_releases` ORDER BY `ts` DESC LIMIT 1");
+		if (mysql_num_rows($Fascel['vars']['sql']) == 0) {
+			$Fascel['vars']['id'] = 1;
 		} else {
-			$row = mysql_fetch_assoc($sql);
-			$id  = $row['id'] + 1;
+			$Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql']);
+			$Fascel['vars']['id']  = $Fascel['vars']['row']['id'] + 1;
 		}
 
-		query("INSERT INTO `Fascel_releases` (`id`, `version`, `codename`, `ts`) VALUES (".$id.", '".sqlesc($_POST['version'])."', '".sqlesc($_POST['codename'])."', ".$_POST['datetime'].")");
+		query("INSERT INTO `Fascel_releases` (`id`, `version`, `codename`, `ts`) VALUES (".$Fascel['vars']['id'].", '".sqlesc($_POST['version'])."', '".sqlesc($_POST['codename'])."', ".$_POST['datetime'].")");
 	} else {
-		$row = mysql_fetch_assoc($sql);
-		$id  = $row['id'];
+		$Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql']);
+		$Fascel['vars']['id']  = $Fascel['vars']['row']['id'];
 	}
 
 	// Insert the changes.
-	foreach ($_POST['changes'] as $key => $changes) {
-		if (!empty($changes)) {
-			$changes = explode("\n", preg_replace('/(\r\n|\r|\n)/', "\n", $changes));
-			foreach ($changes as $change) {
-				query("INSERT INTO `Fascel_changes` (`id`, `type`, `change`) VALUES (".$id.", ".$key.", '".sqlesc($change)."')");
+	foreach ($_POST['changes'] as $Fascel['vars']['key'] => $Fascel['vars']['changes']) {
+		if (!empty($Fascel['vars']['changes'])) {
+			$Fascel['vars']['changes'] = explode("\n", preg_replace('/(\r\n|\r|\n)/', "\n", $Fascel['vars']['changes']));
+			foreach ($Fascel['vars']['changes'] as $Fascel['vars']['change']) {
+				query("INSERT INTO `Fascel_changes` (`id`, `type`, `change`) VALUES (".$Fascel['vars']['id'].", ".$Fascel['vars']['key'].", '".sqlesc($Fascel['vars']['change'])."')");
 			}
 		}
  	}
