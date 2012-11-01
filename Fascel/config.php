@@ -3,9 +3,50 @@
 /*
  * Whether to connect to a database or not.
  * Set to true if you don't already initiate your own connection.
+ * Note that if you enable this, you should create a Fascel/mysql.php file
+ * containing data in the $Fascel['mysql'] array needed for connecting.
  * Default: false
  */
 $Fascel['config']['connect_to_database'] = false;
+
+
+
+/*
+ *
+ * Fancy jQuery stuff
+ *
+ */
+
+/*
+ * Option for enabling jQuery (http://jquery.com)
+ * Possible values:
+ *  - false to disable the usage of jQuery;
+ *  - a string with the path to the jQuery file to use to enable the usage and also enable loading it;
+ *  - true to enable usage but disable loading it (so it assumes you have loaded your own already).
+ * Default: false
+ */
+$Fascel['config']['jQuery'] = false;
+
+/*
+ * Option for enabling jQuery UI (http://jqueryui.com)
+ * Possible values:
+ *  - false to disable the usage of jQuery UI;
+ *  - a string with the path to the jQuery UI file to use to enable the usage and also enable loading it;
+ *  - true to enable usage but disable loading it (so it assumes you have loaded your own already).
+ * Default: false
+ */
+$Fascel['config']['jQueryUI'] = false;
+
+/*
+ * Option for enabling jQuery Timepicker Addon (http://trentrichardson.com/examples/timepicker)
+ * Possible values:
+ *  - false to disable the usage of jQuery Timepicker Addon;
+ *  - a string with the path to the jQuery Timepicker Addon file to use to enable the usage and also enable loading it;
+ *  - true to enable usage but disable loading it (so it assumes you have loaded your own already).
+ * Default: false
+ */
+$Fascel['config']['jQueryTimepickerAddon'] = false;
+
 
 /*
  * Content for the footer. Set to false to hide the footer.
