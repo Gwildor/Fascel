@@ -26,4 +26,6 @@ function query($query) {
 	}
 }
 
+$Fascel['vars']['t_ns'] = sqlesc($Fascel['config']['table_namespace']);
+
 ?>

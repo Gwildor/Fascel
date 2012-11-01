@@ -9,6 +9,14 @@
  */
 $Fascel['config']['connect_to_database'] = false;
 
+/*
+ * Namespace for tables.
+ * This allows running multiple instances on same database, which is required
+ * until multiple projects on same instance are supported, if it ever will be.
+ * You need to edit the setup.sql file or rename the tables yourself.
+ * Note that the value entered here is escaped between initation and usuage.
+ */
+$Fascel['config']['table_namespace'] = 'Fascel_'; 
 
 
 /*
