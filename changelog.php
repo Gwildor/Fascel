@@ -137,7 +137,7 @@ if ($Fascel['vars']['ts2'] > $Fascel['vars']['ts1']) { // User accidentally the 
 <?php
 
 // Fetch changes.
-$Fascel['vars']['sql'] = query("SELECT `Fascel_changes`.`type` as `type`, `Fascel_changes`.`change` as `change` FROM `Fascel_releases`, `Fascel_changes` WHERE `Fascel_releases`.`id` = `Fascel_changes`.`id` AND `Fascel_releases`.`ts` <= ".$Fascel['vars']['ts1']." AND `Fascel_releases`.`ts` ".$Fascel['vars']['gt']." ".$Fascel['vars']['ts2']." ORDER BY `Fascel_changes`.`type` ASC, `Fascel_releases`.`ts` DESC, `Fascel_releases`.`id` DESC");
+$Fascel['vars']['sql'] = query("SELECT `ch`.`type` as `type`, `ch`.`change` as `change` FROM `Fascel_releases` AS `re`, `Fascel_changes` AS `ch` WHERE `re`.`id` = `ch`.`id` AND `re`.`ts` <= ".$Fascel['vars']['ts1']." AND `re`.`ts` ".$Fascel['vars']['gt']." ".$Fascel['vars']['ts2']." ORDER BY `ch`.`type` ASC, `re`.`ts` DESC, `re`.`id` DESC");
 
 $Fascel['vars']['curtype'] = 0;
 while ($Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql'])) {
