@@ -15,8 +15,20 @@ $Fascel['config']['connect_to_database'] = false;
  * until multiple projects on same instance are supported, if it ever will be.
  * You need to edit the setup.sql file or rename the tables yourself.
  * Note that the value entered here is escaped between initation and usuage.
+ * Default: 'Fascel_'
  */
 $Fascel['config']['table_namespace'] = 'Fascel_'; 
+
+/*
+ * Names for tables without the namespace defined above.
+ * You need to edit the setup.sql file or rename the tables yourself.
+ * Note that the value entered here is escaped between initation and usuage.
+ * Default: the keys are the default values.
+ */
+$Fascel['config']['table_names'] = array();
+$Fascel['config']['table_names']['releases'] = 'releases';
+$Fascel['config']['table_names']['changes'] = 'changes';
+
 
 
 /*

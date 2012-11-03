@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
 if (empty($Fascel['vars']['version1']) || empty($Fascel['vars']['version2'])) {
 	$Fascel['vars']['first_set']  = false;
 	$Fascel['vars']['second_set'] = false;
-	$Fascel['vars']['sql'] = query("SELECT * FROM `".$Fascel['vars']['t_ns']."releases` ORDER BY `ts` DESC, `id` DESC");
+	$Fascel['vars']['sql'] = query("SELECT * FROM `".$Fascel['vars']['t_re']."` ORDER BY `ts` DESC, `id` DESC");
 	while ($Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql'])) {
 		if (empty($Fascel['vars']['version1'])) {
 			$Fascel['vars']['version1'] = $Fascel['vars']['row']['id'];
@@ -56,7 +56,7 @@ if (empty($Fascel['vars']['version2'])) {
  * using id's or something like that, for futures where no release date
  * is known.
  */
-$Fascel['vars']['sql'] = query("SELECT `ts` FROM `".$Fascel['vars']['t_ns']."releases` WHERE `id` = '".sqlesc($Fascel['vars']['version1'])."' LIMIT 1");
+$Fascel['vars']['sql'] = query("SELECT `ts` FROM `".$Fascel['vars']['t_re']."` WHERE `id` = '".sqlesc($Fascel['vars']['version1'])."' LIMIT 1");
 $Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql']);
 $Fascel['vars']['ts1'] = $Fascel['vars']['row']['ts'];
 
@@ -65,7 +65,7 @@ if ($Fascel['vars']['version1'] == $Fascel['vars']['version2']) {
 	$Fascel['vars']['gt']  = '>=';
 } else {
 	$Fascel['vars']['gt']  = '>';
-	$Fascel['vars']['sql'] = query("SELECT `ts` FROM `".$Fascel['vars']['t_ns']."releases` WHERE `id` = '".sqlesc($Fascel['vars']['version2'])."' LIMIT 1");
+	$Fascel['vars']['sql'] = query("SELECT `ts` FROM `".$Fascel['vars']['t_re']."` WHERE `id` = '".sqlesc($Fascel['vars']['version2'])."' LIMIT 1");
 	$Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql']);
 	$Fascel['vars']['ts2'] = $Fascel['vars']['row']['ts'];
 }
@@ -90,7 +90,7 @@ if ($Fascel['vars']['ts2'] > $Fascel['vars']['ts1']) { // User accidentally the 
 			<?php
 
 			// Assemble HTML for first dropdown.
-			$Fascel['vars']['sql'] = query("SELECT * FROM `".$Fascel['vars']['t_ns']."releases` ORDER BY `ts` DESC, `id` DESC");
+			$Fascel['vars']['sql'] = query("SELECT * FROM `".$Fascel['vars']['t_re']."` ORDER BY `ts` DESC, `id` DESC");
 			while ($Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql'])) {
 				echo "\n".'			<option value="'.$Fascel['vars']['row']['id'].'"';
 				if ($Fascel['vars']['row']['id'] == $Fascel['vars']['version1']) {
@@ -112,7 +112,7 @@ if ($Fascel['vars']['ts2'] > $Fascel['vars']['ts1']) { // User accidentally the 
 			<?php
 
 			// Assemble HTML for second dropdown.
-			$Fascel['vars']['sql'] = query("SELECT * FROM `".$Fascel['vars']['t_ns']."releases` ORDER BY `ts` DESC, `id` DESC");
+			$Fascel['vars']['sql'] = query("SELECT * FROM `".$Fascel['vars']['t_re']."` ORDER BY `ts` DESC, `id` DESC");
 			while ($Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql'])) {
 				echo "\n".'			<option value="'.$Fascel['vars']['row']['id'].'"';
 				if ($Fascel['vars']['row']['id'] == $Fascel['vars']['version2']) {
@@ -137,7 +137,7 @@ if ($Fascel['vars']['ts2'] > $Fascel['vars']['ts1']) { // User accidentally the 
 <?php
 
 // Fetch changes.
-$Fascel['vars']['sql'] = query("SELECT `ch`.`type` as `type`, `ch`.`change` as `change` FROM `".$Fascel['vars']['t_ns']."releases` AS `re`, `".$Fascel['vars']['t_ns']."changes` AS `ch` WHERE `re`.`id` = `ch`.`id` AND `re`.`ts` <= ".$Fascel['vars']['ts1']." AND `re`.`ts` ".$Fascel['vars']['gt']." ".$Fascel['vars']['ts2']." ORDER BY `ch`.`type` ASC, `re`.`ts` DESC, `re`.`id` DESC");
+$Fascel['vars']['sql'] = query("SELECT `ch`.`type` as `type`, `ch`.`change` as `change` FROM `".$Fascel['vars']['t_re']."` AS `re`, `".$Fascel['vars']['t_ch']."` AS `ch` WHERE `re`.`id` = `ch`.`id` AND `re`.`ts` <= ".$Fascel['vars']['ts1']." AND `re`.`ts` ".$Fascel['vars']['gt']." ".$Fascel['vars']['ts2']." ORDER BY `ch`.`type` ASC, `re`.`ts` DESC, `re`.`id` DESC");
 
 $Fascel['vars']['curtype'] = 0;
 while ($Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql'])) {

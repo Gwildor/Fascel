@@ -10,9 +10,9 @@ if ($Fascel['vars']['admin']) {
 		//echo '<pre>';print_r($_POST);echo '</pre>';
 
 		// Check if version already exists.
-		$Fascel['vars']['sql'] = query("SELECT `id` FROM `".$Fascel['vars']['t_ns']."releases` WHERE `version` = '".sqlesc($_POST['version'])."' LIMIT 1");
+		$Fascel['vars']['sql'] = query("SELECT `id` FROM `".$Fascel['vars']['t_re']."` WHERE `version` = '".sqlesc($_POST['version'])."' LIMIT 1");
 		if (mysql_num_rows($Fascel['vars']['sql']) == 0) {
-			$Fascel['vars']['sql'] = query("SELECT `id`, `version` FROM `".$Fascel['vars']['t_ns']."releases` ORDER BY `ts` DESC LIMIT 1");
+			$Fascel['vars']['sql'] = query("SELECT `id`, `version` FROM `".$Fascel['vars']['t_re']."` ORDER BY `ts` DESC LIMIT 1");
 			if (mysql_num_rows($Fascel['vars']['sql']) == 0) {
 				$Fascel['vars']['id'] = 1;
 			} else {
@@ -20,7 +20,7 @@ if ($Fascel['vars']['admin']) {
 				$Fascel['vars']['id']  = $Fascel['vars']['row']['id'] + 1;
 			}
 
-			query("INSERT INTO `".$Fascel['vars']['t_ns']."releases` (`id`, `version`, `codename`, `ts`) VALUES (".$Fascel['vars']['id'].", '".sqlesc($_POST['version'])."', '".sqlesc($_POST['codename'])."', ".$_POST['datetime'].")");
+			query("INSERT INTO `".$Fascel['vars']['t_re']."` (`id`, `version`, `codename`, `ts`) VALUES (".$Fascel['vars']['id'].", '".sqlesc($_POST['version'])."', '".sqlesc($_POST['codename'])."', ".$_POST['datetime'].")");
 		} else {
 			$Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql']);
 			$Fascel['vars']['id']  = $Fascel['vars']['row']['id'];
@@ -31,7 +31,7 @@ if ($Fascel['vars']['admin']) {
 			if (!empty($Fascel['vars']['changes'])) {
 				$Fascel['vars']['changes'] = explode("\n", preg_replace('/(\r\n|\r|\n)/', "\n", $Fascel['vars']['changes']));
 				foreach ($Fascel['vars']['changes'] as $Fascel['vars']['change']) {
-					query("INSERT INTO `".$Fascel['vars']['t_ns']."changes` (`id`, `type`, `change`) VALUES (".$Fascel['vars']['id'].", ".$Fascel['vars']['key'].", '".sqlesc($Fascel['vars']['change'])."')");
+					query("INSERT INTO `".$Fascel['vars']['t_ch']."` (`id`, `type`, `change`) VALUES (".$Fascel['vars']['id'].", ".$Fascel['vars']['key'].", '".sqlesc($Fascel['vars']['change'])."')");
 				}
 			}
 	 	}

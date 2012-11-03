@@ -26,6 +26,7 @@ function query($query) {
 	}
 }
 
-$Fascel['vars']['t_ns'] = sqlesc($Fascel['config']['table_namespace']);
+$Fascel['vars']['t_re'] = sqlesc($Fascel['config']['table_namespace'].$Fascel['config']['table_names']['releases']);
+$Fascel['vars']['t_ch'] = sqlesc($Fascel['config']['table_namespace'].$Fascel['config']['table_names']['changes']);
 
 ?>
