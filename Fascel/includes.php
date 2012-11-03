@@ -12,6 +12,8 @@ if ($Fascel['config']['connect_to_database']) {
 	mysql_select_db($Fascel['mysql']['db']);
 }
 
+
+
 function sqlesc($str) {
 	return mysql_real_escape_string($str);
 }
@@ -25,6 +27,8 @@ function query($query) {
 		return $sql; // No errors → return reference object.
 	}
 }
+
+
 
 $Fascel['vars']['t_re'] = sqlesc($Fascel['config']['table_namespace'].$Fascel['config']['table_names']['releases']);
 $Fascel['vars']['t_ch'] = sqlesc($Fascel['config']['table_namespace'].$Fascel['config']['table_names']['changes']);
