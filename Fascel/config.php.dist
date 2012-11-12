@@ -41,28 +41,50 @@ $Fascel['config']['table_names']['changes'] = 'changes';
  * Option for enabling jQuery (http://jquery.com)
  * Possible values:
  *  - false to disable the usage of jQuery;
- *  - a string with the path to the jQuery file to use to enable the usage and also enable loading it;
- *  - true to enable usage but disable loading it (so it assumes you have loaded your own already).
+ *  - a string with the path to the jQuery file to use to enable the usage and
+      also enable loading it;
+ *  - true to enable usage but disable loading it (so it assumes you have
+      loaded your own already).
  * Default: false
  */
 $Fascel['config']['jQuery'] = false;
 
 /*
  * Option for enabling jQuery UI (http://jqueryui.com)
+ * Relies on the jQuery setting: if that one is set to false, the value of
+   this setting is never used.
  * Possible values:
  *  - false to disable the usage of jQuery UI;
- *  - a string with the path to the jQuery UI file to use to enable the usage and also enable loading it;
- *  - true to enable usage but disable loading it (so it assumes you have loaded your own already).
+ *  - a string with the path to the jQuery UI file to use to enable the usage
+      and also enable loading it;
+ *  - true to enable usage but disable loading it (so it assumes you have
+      loaded your own already).
  * Default: false
  */
 $Fascel['config']['jQueryUI'] = false;
 
 /*
+ * Location of the CSS file for jQuery UI (http://jqueryui.com)
+ * Relies on the jQuery and jQueryUI settings: if either is set to false, the
+   value of this setting is never used.
+ * Possible values:
+ *  - false to disable the loading of the CSS file. Useful for when you have
+      loaded it yourself already or if you have made a custom style sheet;
+ *  - a string with the path to the jQuery UI CSS file to enable loading it.
+ * Default: false
+ */
+$Fascel['config']['jQueryUICSS'] = false;
+
+/*
  * Option for enabling jQuery Timepicker Addon (http://trentrichardson.com/examples/timepicker)
+ * Relies on the jQuery and jQueryUI settings: if either is set to false, the
+   value of this setting is never used.
  * Possible values:
  *  - false to disable the usage of jQuery Timepicker Addon;
- *  - a string with the path to the jQuery Timepicker Addon file to use to enable the usage and also enable loading it;
- *  - true to enable usage but disable loading it (so it assumes you have loaded your own already).
+ *  - a string with the path to the jQuery Timepicker Addon file to use to
+      enable the usage and also enable loading it;
+ *  - true to enable usage but disable loading it (so it assumes you have
+      loaded your own already).
  * Default: false
  */
 $Fascel['config']['jQueryTimepickerAddon'] = false;
