@@ -1,5 +1,6 @@
 <?php
 
+$Fascel = array('vars' => array('Fascel_dir' => false));
 require_once 'Fascel/includes.php';
 
 

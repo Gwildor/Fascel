@@ -1,6 +1,11 @@
 <?php
 
-$Fascel = array('config' => array(), 'vars' => array(), 'constants' => array());
+if (isset($Fascel['vars'])) {
+	$Fascel['config'] = array();
+	$Fascel['constants'] = array();
+} else {
+	$Fascel = array('config' => array(), 'vars' => array(), 'constants' => array());
+}
 
 require_once 'constants.php';
 require_once 'config.php';
@@ -29,6 +34,10 @@ function query($query) {
 }
 
 
+
+if (!isset($Fascel['vars']['Fascel_dir'])) {
+	$Fascel['vars']['Fascel_dir'] = true;
+}
 
 $Fascel['vars']['t_re'] = sqlesc($Fascel['config']['table_namespace'].$Fascel['config']['table_names']['releases']);
 $Fascel['vars']['t_ch'] = sqlesc($Fascel['config']['table_namespace'].$Fascel['config']['table_names']['changes']);
