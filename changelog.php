@@ -142,6 +142,12 @@ $Fascel['vars']['sql'] = query("SELECT `ch`.`type` as `type`, `ch`.`change` as `
 
 $Fascel['vars']['curtype'] = 0;
 while ($Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql'])) {
+	$Fascel['vars']['change'] = $Fascel['vars']['row']['change'];
+
+	if ($Fascel['config']['ticket_tracker'] !== false) {
+		$Fascel['vars']['change'] = preg_replace('/#(\d+)/', '<a href="'.$Fascel['config']['ticket_tracker'].'$1" target="_blank">#$1</a>', $Fascel['vars']['change']);
+	}
+
 	if ($Fascel['vars']['curtype'] != $Fascel['vars']['row']['type']) {
 
 		if ($Fascel['vars']['curtype'] != 0) {
@@ -165,7 +171,7 @@ while ($Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql'])) {
 		echo "\n\t".'<ul>';
 
 	}
-	echo "\n\t\t".'<li>'.$Fascel['vars']['row']['change'].'</li>';
+	echo "\n\t\t".'<li>'.$Fascel['vars']['change'].'</li>';
 
 }
 echo '

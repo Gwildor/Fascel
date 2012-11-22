@@ -10,6 +10,17 @@
 $Fascel['config']['connect_to_database'] = false;
 
 /*
+ * The ticket tracker that is used.
+ * Possible values:
+ *  - false to disable the usage of a ticket tracker;
+ *  - a string of the URL to the ticket tracker. Every change will be matched
+      to see if it contains something like #1337 and if so, the number will be
+      appended to the string and a link will be made of it.
+ * Default: false
+ */
+$Fascel['config']['ticket_tracker'] = false;
+
+/*
  * Namespace for tables.
  * This allows running multiple instances on same database, which is required
  * until multiple projects on same instance are supported, if it ever will be.
