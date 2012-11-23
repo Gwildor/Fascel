@@ -41,7 +41,27 @@ if ($Fascel['vars']['admin']) {
 		<?php
 	}
 
+
+	if ($Fascel['config']['jQuery'] && $Fascel['config']['jQueryUI'] && $Fascel['config']['jQueryTimepickerAddon']) {
 	?>
+
+	<script language="javascript">
+	$(function() {
+		$('#fascel_add_release_datetime input').datetimepicker({'dateFormat': 'dd-mm-yy'});
+	});
+	</script>
+
+	<?php
+	} elseif ($Fascel['config']['jQuery'] && $Fascel['config']['jQueryUI']) {
+	?>
+
+	<script language="javascript">
+	$(function() {
+		$('#fascel_add_release_datetime input').datepicker({'dateFormat': 'dd-mm-yy'});
+	});
+	</script>
+
+	<?php } ?>
 
 	<form id="fascel_add_release_form" method="post">
 
