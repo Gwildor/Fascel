@@ -1,5 +1,5 @@
 #Fascel
-Fascel is a __f__lexible __a__nd __s__mart __c__hang__el__og generator.
+Fascel is a __f__lexible __a__nd __s__mart __c__hang<strong>el</strong>og generator.
 
 ##Version
 The latest release is version __0.1__, released on __1 August 2012__.
