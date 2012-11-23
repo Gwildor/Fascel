@@ -12,7 +12,7 @@ if ($Fascel['vars']['admin']) {
 		// Check if version already exists.
 		$Fascel['vars']['sql'] = query("SELECT `id` FROM `".$Fascel['vars']['t_re']."` WHERE `version` = '".sqlesc($_POST['version'])."' LIMIT 1");
 		if (mysql_num_rows($Fascel['vars']['sql']) == 0) {
-			$Fascel['vars']['sql'] = query("SELECT `id`, `version` FROM `".$Fascel['vars']['t_re']."` ORDER BY `ts` DESC LIMIT 1");
+			$Fascel['vars']['sql'] = query("SELECT `id`, `version` FROM `".$Fascel['vars']['t_re']."` ORDER BY `id` DESC LIMIT 1");
 			if (mysql_num_rows($Fascel['vars']['sql']) == 0) {
 				$Fascel['vars']['id'] = 1;
 			} else {
