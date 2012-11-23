@@ -1,5 +1,18 @@
 <?php
 
+function parse_date_str($str) {
+	if (preg_match('/^\d+$/', $str)) {
+		return $str;
+	}
+	if (preg_match('/^(\d{2})-(\d{2})-(\d{4})$/', $str, $regs)) {
+		return mktime(0, 0, 0, $regs[2], $regs[1], $regs[3]);
+	}
+	if (preg_match('/^(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2})$/', $str, $regs)) {
+		return mktime($regs[4], $regs[5], 0, $regs[2], $regs[1], $regs[3]);
+	}
+	return false;
+}
+
 require_once 'includes.php';
 require_once 'auth.php';
 
@@ -20,7 +33,10 @@ if ($Fascel['vars']['admin']) {
 				$Fascel['vars']['id']  = $Fascel['vars']['row']['id'] + 1;
 			}
 
-			query("INSERT INTO `".$Fascel['vars']['t_re']."` (`id`, `version`, `codename`, `ts`) VALUES (".$Fascel['vars']['id'].", '".sqlesc($_POST['version'])."', '".sqlesc($_POST['codename'])."', ".$_POST['datetime'].")");
+			if ($Fascel['vars']['datetime'] = parse_date_str($_POST['datetime'])) {
+				query("INSERT INTO `".$Fascel['vars']['t_re']."` (`id`, `version`, `codename`, `ts`) VALUES (".$Fascel['vars']['id'].", '".sqlesc($_POST['version'])."', '".sqlesc($_POST['codename'])."', ".$Fascel['vars']['datetime'].")");
+			}
+			print 'result: '.$Fascel['vars']['datetime'].'<br />';
 		} else {
 			$Fascel['vars']['row'] = mysql_fetch_assoc($Fascel['vars']['sql']);
 			$Fascel['vars']['id']  = $Fascel['vars']['row']['id'];
